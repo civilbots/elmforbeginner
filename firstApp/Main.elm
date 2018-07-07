@@ -1,9 +1,10 @@
 module Main exposing (..)
 
-import Html exposing (div, h3, button, text)
-import Html.Events exposing (onClick)
+import Html exposing (input, div, h3, button, text, br)
+import Html.Attributes exposing (placeholder)
+import Html.Events exposing (onClick, onInput)
 
-
+main : Program Never Model Msg
 main =
     Html.beginnerProgram
     {
@@ -12,30 +13,48 @@ main =
     , view = view
     }
 
-type alias Model = Int
+type alias Model =
+    {
+      input : Int
+    , calories : Int
+    }
 
 initModel : Model
 initModel =
-    0
+    Model 0 0
 
 type Msg
     = AddCalore
+    | Input String
     | Clear
 
 update : Msg -> Model -> Model
 update msg model=
     case msg of
         AddCalore ->
-            model + 1
+            { model | calories = model.calories + model.input }
+        Input value ->
+            case String.toInt value of
+                Ok calories ->
+                    { model | input = calories }
+                Err err ->
+                    { model | input = 0 }
         Clear ->
-            initModel
+            { model | calories = 0 }
 
 view : Model -> Html.Html Msg
 view model =
     div []
      [
        h3 []
-         [ text ("Total Calories = " ++ (toString model)) ]
+         [ text ("Total Calories = " ++ (toString model.calories)) ]
+     , input
+        [
+          placeholder "enter calories here"
+        , onInput Input
+        ]
+        []
+     , br [] []
      , button
          [
            onClick AddCalore
