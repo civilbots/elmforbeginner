@@ -4,6 +4,7 @@ import Html exposing (input, div, h3, button, text, br)
 import Html.Attributes exposing (placeholder)
 import Html.Events exposing (onClick, onInput)
 
+
 main : Program Never Model Msg
 main =
     Html.beginnerProgram
@@ -12,6 +13,9 @@ main =
     , update = update
     , view = view
     }
+
+--Model
+
 
 type alias Model =
     {
@@ -28,6 +32,10 @@ type Msg
     | Input String
     | Clear
 
+
+--Update
+
+
 update : Msg -> Model -> Model
 update msg model=
     case msg of
@@ -41,6 +49,10 @@ update msg model=
                     { model | input = 0 }
         Clear ->
             { model | calories = 0 }
+
+
+--VIEW
+
 
 view : Model -> Html.Html Msg
 view model =
