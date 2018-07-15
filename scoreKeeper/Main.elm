@@ -295,5 +295,4 @@ playerForm model =
                 []
         ,   button [ type_ "submit"] [ text "Save" ]
         ,   button [ type_ "button", onClick Cancel ] [ text "Cancel" ]
-        ,   div [] [ text (toString model) ]
         ]
