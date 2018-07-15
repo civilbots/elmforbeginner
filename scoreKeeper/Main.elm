@@ -66,11 +66,24 @@ update msg model =
     case msg of
         Input name ->
             { model | playerName = name }
+        Save ->
+            add model
         Cancel ->
             { model | playerName = "" }
         _ ->
             model
 
+
+add : Model -> Model
+add model =
+    let
+        player =
+            Player model.playerName (List.length model.players) 0
+        newPlayers = player :: model.players
+    in  { model
+            | players = newPlayers
+            , playerName = ""
+        }
 
 -- view
 
