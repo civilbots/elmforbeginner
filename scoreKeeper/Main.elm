@@ -67,7 +67,10 @@ update msg model =
         Input name ->
             { model | playerName = name }
         Save ->
-            add model
+            if String.isEmpty model.playerName then
+                model
+            else
+                add model
         Cancel ->
             { model | playerName = "" }
         _ ->
@@ -79,7 +82,8 @@ add model =
     let
         player =
             Player model.playerName (List.length model.players) 0
-        newPlayers = player :: model.players
+        newPlayers =
+            player :: model.players
     in  { model
             | players = newPlayers
             , playerName = ""
