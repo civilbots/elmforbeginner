@@ -6,7 +6,7 @@
 * gulp 3.9.1
 
 ##### Courtesy :
-[Elm for beginners] (https://courses.knowthen.com/courses/enrolled/86520)
+[Elm for beginners](https://courses.knowthen.com/courses/enrolled/86520)
 
 This repository is created to record all the sample programs that I've created as part of learning the basics of elm.
 Among all the directories, you will want to try "scoreKeeper" to taste the source code of "Baseball Scorekeeper" application.
