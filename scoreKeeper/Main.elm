@@ -1,6 +1,6 @@
 module Main exposing (..)
 
-import Html exposing (Html,text, div, form, h1, input, button)
+import Html exposing (Html,text, div, form, h1, input, button, ul, li, i, header, footer)
 import Html.Attributes exposing (class, placeholder, value, type_)
 import Html.Events exposing (onSubmit, onInput, onClick)
 
@@ -76,6 +76,27 @@ update msg model =
                 | playerName = ""
                 , playerId = Nothing
             }
+        Score scorer score ->
+            let
+                newPlayers =
+                    List.map
+                        (\player ->
+                            if player.id == scorer.id then
+                                { player
+                                    | points = scorer.points + score
+                                }
+                            else
+                                player
+                        )
+                        model.players
+                newPlays =
+                    Play (List.length model.plays) scorer.id scorer.name score :: model.plays
+            in { model
+                | players = newPlayers
+                , plays = newPlays
+            }
+
+
         _ ->
             model
 
@@ -133,6 +154,7 @@ add model =
             ,   playerName = ""
         }
 
+
 -- view
 
 
@@ -142,8 +164,73 @@ view model =
         [ h1
             []
             [ text "Score Keeper" ]
+        , playerListView model
         , playerForm model
         ]
+
+
+playerListView : Model -> Html Msg
+playerListView model =
+    div []
+        [
+            playerListHeader
+        ,   playerList model
+        ,   playerListTotal model
+        ]
+
+
+playerListHeader : Html Msg
+playerListHeader =
+    header []
+        [   div [] [text "Name"]
+        ,   div [] [text "Points"]
+        ]
+
+
+playerList : Model -> Html Msg
+playerList model =
+    model.players
+        |> List.sortBy .name
+        |> List.map player
+        |> ul []
+
+
+player : Player -> Html Msg
+player player =
+    li []
+        [   i
+                [   class "edit"
+                ,   onClick (Edit player)
+                ]
+                []
+        ,   div []
+            [text player.name]
+        ,   button
+            [   type_ "button"
+            ,   onClick (Score player 2)
+            ]
+            [ text "2pt" ]
+        ,   button
+            [   type_ "button"
+            ,   onClick (Score player 3)
+            ]
+            [ text "3pt" ]
+        ,   div []
+            [ text (toString player.points) ]
+        ]
+
+
+playerListTotal : Model -> Html Msg
+playerListTotal model =
+    let
+        total =
+            List.map .points model.players
+                |>  List.sum
+    in
+        footer []
+            [   div [] [text "Total"]
+            ,   div [] [text (toString total)]
+            ]
 
 
 playerForm : Model -> Html Msg
@@ -158,5 +245,3 @@ playerForm model =
         ,   button [ type_ "button", onClick Cancel ] [ text "Cancel" ]
         ,   div [] [ text (toString model) ]
         ]
-
-
