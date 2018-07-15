@@ -96,6 +96,12 @@ update msg model =
                 , plays = newPlays
             }
 
+        Edit player ->
+            { model
+              | playerName = player.name
+            , playerId = Just player.id
+            }
+
 
         _ ->
             model
