@@ -112,6 +112,7 @@ edit model id =
             |   players = newPlayers
             ,   plays = newPlays
             ,   playerName = ""
+            ,   playerId = Nothing
     }
 
 
